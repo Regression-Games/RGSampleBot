@@ -4,16 +4,20 @@ export function configureBot(rg) {
   };
 }
 
+var startTime = null
+
 export async function processTick(rg) {
+
+  if (!startTime) startTime = new Date().getTime();
 
   let powerUps = rg.findEntities("PowerUp")
   if (powerUps) {
     rg.performAction("MoveToPosition", powerUps[0].position)
   }
 
-  await new Promise(f => setTimeout(f, 3000));
-
-  // Now try to finish
-  rg.complete();
+  if (new Date().getTime() - startTime > 5000) {
+    // Now try to finish
+    rg.complete();
+  }
 
 }
